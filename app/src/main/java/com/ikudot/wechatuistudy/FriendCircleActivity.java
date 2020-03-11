@@ -2,10 +2,13 @@ package com.ikudot.wechatuistudy;
 
 import android.annotation.TargetApi;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.DisplayCutout;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,7 +23,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.ikudot.wechatuistudy.Util.Utils;
 import com.ikudot.wechatuistudy.listener.FriendCircleScrollViewListener;
 
-public class FriendCircleActivity extends AppCompatActivity {
+public class FriendCircleActivity extends AppCompatActivity implements View.OnTouchListener {
     private static final String TAG = "FriendCircleActivity";
     ImageView userHead; //用户头像
     RelativeLayout topBar; //悬浮标题栏布局
@@ -30,6 +33,7 @@ public class FriendCircleActivity extends AppCompatActivity {
     RelativeLayout photoLayout;//发朋友圈按钮
     ColorIconView photoIcon;//发朋友圈按钮图标
     NestedScrollView scrollView;//滑动布局
+    FrameLayout moveLayout;//滑动布局
     int safeTopDistance;//距离顶部安全距离(必须是刘海屏才有)
     int downY;//向下滑动时标题栏渐变点
     int upY;//向上滑动时标题栏渐变点
@@ -40,6 +44,7 @@ public class FriendCircleActivity extends AppCompatActivity {
     boolean topBarBackgroundTransparentMode = true; //当前topBar是否为背景透明模式
     boolean allowUp = false;
     int scrollY;
+    int tempDistance;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +71,8 @@ public class FriendCircleActivity extends AppCompatActivity {
         });
         //设置scrollView滑动监听
         scrollView.setOnScrollChangeListener(scrollViewListener);
+        //设置scrollView手势监听
+        scrollView.setOnTouchListener(this);
     }
 
     private void handleScrollDown(int scrollY) {
@@ -127,6 +134,10 @@ public class FriendCircleActivity extends AppCompatActivity {
                     alpha = 1;
                     allowUp = false;
                 }
+                if (alpha <= 0) {
+                    setTopBarBackgroundLightMode();
+                    upScrollPart = 1;
+                }
             }
             topBar.setAlpha((float) alpha);
         }
@@ -152,7 +163,6 @@ public class FriendCircleActivity extends AppCompatActivity {
         title.setVisibility(View.VISIBLE);
         title.setTextColor(getResources().getColor(R.color.black));
         topBar.setBackgroundColor(getResources().getColor(R.color.statusBarColors));
-
         Utils.StatusBarLightMode(FriendCircleActivity.this);
     }
 
@@ -165,6 +175,7 @@ public class FriendCircleActivity extends AppCompatActivity {
         photoIcon = findViewById(R.id.friend_circle_photo_icon);
         photoLayout = findViewById(R.id.friend_circle_photo_layout);
         scrollView = findViewById(R.id.friend_circle_scroll_view);
+        moveLayout = findViewById(R.id.friend_circle_move_layout);
         title.setVisibility(View.GONE);
         //根据屏幕刘海高度动态设置标题栏padding_top属性，以防刘海遮挡内容
         topBar.post(new Runnable() {
@@ -197,25 +208,37 @@ public class FriendCircleActivity extends AppCompatActivity {
         });
     }
 
-    private int touchY;
+    private float touchY;
+
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (scrollY == 0) {
+    public boolean onTouch(View v, MotionEvent event) {
+        if (scrollY <= 0) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:{
-                    touchY = (int) event.getRawY();
+                    touchY = event.getRawY();
                 }break;
                 case MotionEvent.ACTION_MOVE:{
-                    int moveY = (int) (event.getRawY() - touchY);
-                    scrollView.setTranslationY(moveY);
+                    float moveY = (event.getRawY() - touchY);
+//                        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) scrollView.getLayoutParams();
+//                        layoutParams.setMargins(0,moveY,0,0);
+//                        scrollView.setLayoutParams(layoutParams);
+                        Log.d(TAG, "onTouch: ");
+                        moveLayout.setTranslationY(moveY*2/5+tempDistance);
+
                 }break;
                 case MotionEvent.ACTION_UP:{
-                    scrollView.setTranslationY(0);
+//                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) scrollView.getLayoutParams();
+//                    layoutParams.setMargins(0,-Utils.dpTpPx(80,this),0,0);
+//                    scrollView.setLayoutParams(layoutParams);
+                    moveLayout.setTranslationY(0);
+                    tempDistance = 0;
+                }break;
+                case MotionEvent.ACTION_POINTER_DOWN:{
+                    tempDistance = (int) moveLayout.getTranslationY();
+                    touchY =  event.getRawY();
                 }break;
             }
         }
-
-        return super.onTouchEvent(event);
-
+        return false;
     }
 }
