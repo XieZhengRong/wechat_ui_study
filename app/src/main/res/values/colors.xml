@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="black">#ff000000</color>
+    <color name="statusBarColors">#ffebebeb</color>
+    <color name="white">#ffffffff</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="photo_select_bg_color">#33ffffff</color>
+    <color name="photo_light_mode_select_bg_color">#33000000</color>
+    <color name="user_head_select_bg_color">#77000000</color>
+</resources>

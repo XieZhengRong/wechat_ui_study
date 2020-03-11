@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ShadeView">
+        <attr name="icon" format="reference" />
+        <attr name="color" format="color" />
+        <attr name="text" format="string" />
+        <attr name="text_size" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="ColorIconView">
+        <attr name="src_icon" format="reference" />
+        <attr name="reverse_color" format="color" />
+        <attr name="reverse" format="boolean" />
+    </declare-styleable>
+</resources>
