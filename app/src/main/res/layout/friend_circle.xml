@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2c2c2c"
+    android:background="@color/friend_circle_root_color"
     android:orientation="vertical">
     <RelativeLayout
         android:id="@+id/friend_circle_top_bar"
@@ -11,126 +11,120 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:translationZ="1dp">
-            <RelativeLayout
-                android:id="@+id/friend_circle_back"
-                android:clickable="true"
-                android:background="@drawable/back_ripple_bg"
-                android:layout_width="38dp"
-                android:layout_height="45dp"
-                >
 
-                <ImageView
-                    android:id="@+id/friend_circle_back_icon"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/b6i">
-                </ImageView>
-            </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/friend_circle_back"
+            android:layout_width="38dp"
+            android:layout_height="45dp"
+            android:background="@drawable/back_ripple_bg"
+            android:clickable="true">
 
-            <TextView
-                android:id="@+id/friend_circle_back_title"
-                android:gravity="center_vertical"
-                android:layout_toRightOf="@id/friend_circle_back"
-                android:layout_gravity="bottom"
-                android:layout_width="wrap_content"
-                android:text="@string/friend_circle"
-                android:textSize="15sp"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_height="45dp" />
+            <ImageView
+                android:id="@+id/friend_circle_back_icon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/b6i"></ImageView>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/friend_circle_back_title"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_gravity="bottom"
+            android:layout_toRightOf="@id/friend_circle_back"
+            android:gravity="center_vertical"
+            android:text="@string/friend_circle"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:id="@+id/friend_circle_photo_layout"
-            android:clickable="true"
-            android:background="@drawable/photo_selector"
             android:layout_width="55dp"
             android:layout_height="45dp"
             android:layout_alignParentRight="true"
-            >
+            android:background="@drawable/photo_selector"
+            android:clickable="true">
+
             <com.ikudot.wechatuistudy.ColorIconView
                 android:id="@+id/friend_circle_photo_icon"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                app:src_icon="@drawable/baa"
-                app:reverse_color="@android:color/white"
-                app:reverse="true"
                 android:layout_centerInParent="true"
-               />
+                app:reverse="true"
+                app:reverse_color="@android:color/white"
+                app:src_icon="@drawable/baa" />
         </RelativeLayout>
 
     </RelativeLayout>
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/friend_circle_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
         android:layout_marginTop="-120dp"
+        android:overScrollMode="never">
 
-        >
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/friend_circle_move_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <RelativeLayout
+                android:layout_height="match_parent">
+
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="340dp">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:background="@drawable/default_bg"
-                        android:scaleType="centerCrop"
-                        android:layout_height="match_parent" />
+                    android:layout_height="340dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/default_bg" />
 
-                    <LinearLayout
-                        android:translationZ="1dp"
-                        android:id="@+id/user_head_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginEnd="13dp"
-                        android:gravity="center">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="5dp"
-                            android:textStyle="bold"
-                            android:text="谢峥嵘"
-
-                            android:textColor="@android:color/white" />
-                        <ImageView
-                            android:id="@+id/friend_circle_user_head"
-                            android:layout_width="57dp"
-                            android:layout_height="57dp"
-                            android:scaleType="fitXY"
-                            android:clickable="true"
-                            android:foreground="@drawable/user_head_selector"
-                            android:src="@mipmap/ic_launcher_round"
-                             />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="15dp"
-                        android:layout_alignBottom="@id/user_head_layout"
-                        android:background="@android:color/white"
-
-                        />
-                </RelativeLayout>
-                <View
+                <LinearLayout
+                    android:layout_marginTop="325dp"
                     android:layout_width="match_parent"
                     android:layout_height="1500dp"
-                    android:background="@android:color/white" />
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
 
-            </LinearLayout>
-        </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/user_head_layout"
+                    android:layout_marginTop="286dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="13dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="谢峥嵘"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/friend_circle_user_head"
+                        android:layout_width="54dp"
+                        android:layout_height="54dp"
+                        android:clickable="true"
+                        android:foreground="@drawable/user_head_selector"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_launcher_round" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+
 </LinearLayout>
 
 

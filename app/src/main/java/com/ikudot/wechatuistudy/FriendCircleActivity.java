@@ -33,7 +33,7 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
     RelativeLayout photoLayout;//发朋友圈按钮
     ColorIconView photoIcon;//发朋友圈按钮图标
     NestedScrollView scrollView;//滑动布局
-    FrameLayout moveLayout;//滑动布局
+    LinearLayout moveLayout;//滑动布局
     int safeTopDistance;//距离顶部安全距离(必须是刘海屏才有)
     int downY;//向下滑动时标题栏渐变点
     int upY;//向上滑动时标题栏渐变点
@@ -57,6 +57,7 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
         initViews();
         initData();
         initEvents();
+        Log.d(TAG, "onTouch: getTranslationY="+moveLayout.getTranslationY());
     }
 
     private void initEvents() {
@@ -65,7 +66,7 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
             this.scrollY = scrollY;
             if (!allowUp) {
                 handleScrollDown(scrollY);
-            }else {
+            } else {
                 handleScrollUp(scrollY);
             }
         });
@@ -80,8 +81,8 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
             //下滑距离达到 下滑渐变点，则重置上滑阶段为1
             upScrollPart = 1;
             double alpha = 0;
-            if (downScrollPart == 1){
-                alpha = 1-(scrollY - downY) / (10 * 10.0);
+            if (downScrollPart == 1) {
+                alpha = 1 - (scrollY - downY) / (10 * 10.0);
                 if (alpha < 0) {
                     alpha = 0;
                     downScrollPart = 2;
@@ -92,7 +93,7 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
                 //每下滑15像素不透明度增加0.1
                 alpha = (scrollY - secondDowScrollPartPoint) / (10 * 10.0);
                 //不透明度大于1后不再增加
-                if (alpha>1) {
+                if (alpha > 1) {
                     alpha = 1;
                     allowUp = true;
                 }
@@ -130,7 +131,7 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
                  */
                 alpha = (secondUpScrollPartPoint - scrollY) / (10 * 10.0);
                 //不透明度大于1后不再增加
-                if (alpha>1) {
+                if (alpha > 1) {
                     alpha = 1;
                     allowUp = false;
                 }
@@ -209,35 +210,43 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
     }
 
     private float touchY;
+    private float lastMoveY;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (scrollY <= 0) {
             switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:{
+                case MotionEvent.ACTION_DOWN: {
                     touchY = event.getRawY();
-                }break;
-                case MotionEvent.ACTION_MOVE:{
-                    float moveY = (event.getRawY() - touchY);
-//                        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) scrollView.getLayoutParams();
-//                        layoutParams.setMargins(0,moveY,0,0);
-//                        scrollView.setLayoutParams(layoutParams);
-                        Log.d(TAG, "onTouch: ");
-                        moveLayout.setTranslationY(moveY*2/5+tempDistance);
+                    lastMoveY= touchY;
+                }
+                break;
+                case MotionEvent.ACTION_MOVE: {
 
-                }break;
-                case MotionEvent.ACTION_UP:{
-//                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) scrollView.getLayoutParams();
-//                    layoutParams.setMargins(0,-Utils.dpTpPx(80,this),0,0);
-//                    scrollView.setLayoutParams(layoutParams);
+                    float moveY = (event.getRawY() - touchY);
+                    if (lastMoveY > event.getRawY()) {//手指上滑
+                        Log.d(TAG, "onTouch: 手指上滑");
+                        moveLayout.setTranslationY(moveY * 2/5 + tempDistance);
+                        Log.d(TAG, "onTouch: setTranslationY"+moveLayout.getTranslationY());
+                        if (moveLayout.getTranslationY() <= 340) {
+                            return true;
+                        }
+                    } else {//手指下滑
+                        Log.d(TAG, "onTouch: 手指下滑");
+                        moveLayout.setTranslationY(moveY * 2 / 5 + tempDistance);
+                    }
+                    lastMoveY = event.getRawY();
+                }
+                break;
+                case MotionEvent.ACTION_UP: {
                     moveLayout.setTranslationY(0);
                     tempDistance = 0;
-                }break;
-                case MotionEvent.ACTION_POINTER_DOWN:{
+                }
+                break;
+                case MotionEvent.ACTION_POINTER_DOWN: {
                     tempDistance = (int) moveLayout.getTranslationY();
-                    touchY =  event.getRawY();
-                }break;
-            }
+                    touchY = event.getRawY();
+                }
+                break;
         }
         return false;
     }
