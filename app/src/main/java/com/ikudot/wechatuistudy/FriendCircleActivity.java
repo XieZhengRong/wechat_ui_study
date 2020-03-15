@@ -1,5 +1,6 @@
 package com.ikudot.wechatuistudy;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,7 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
     boolean everTranslateY = false;//用户是否曾经向下拖动过布局
     private float touchY;//用户手指按下点的Y轴坐标
     FriendCircleBinding binding;//视图绑定对象
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,7 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
         initEvents();
     }
 
+    private boolean downOnuUserHead = false;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -63,10 +66,13 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
             }
             break;
             case MotionEvent.ACTION_MOVE: {
+                if (touchY <= 0) return true;
                 float moveY = (event.getRawY() - touchY);
-                Log.d(TAG, "onTouch: setTranslationY" + binding.friendCircleMoveLayout.getTranslationY());
+
+                Log.d(TAG, "moveY: " + moveY);
+                Log.d(TAG, "touchY: " + touchY);
                 //当滑动距离为0.即没有滑动的时候才能向下移动布局
-                if (scrollY <= 0) {
+                if (scrollY <= 0 && !downOnuUserHead) {
                     binding.friendCircleMoveLayout.setTranslationY(moveY * 2 / 5 + tempDistance);
                 }
                 //如果TranslationY>0,证明此次向下拖动过布局，不是一开始就向下滚动
@@ -82,7 +88,7 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
                         //不允许继续往上拖，保持布局在原位置·
                         binding.friendCircleMoveLayout.setTranslationY(0);
                         return true;
-                    }else {
+                    } else {
                         //everTranslateY=false 即用户没有向下拖动过布局，正常向下滚动scrollView
                         return false;
                     }
@@ -109,7 +115,7 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
     }
 
 
-
+    @SuppressLint("ClickableViewAccessibility")
     private void initEvents() {
         FriendCircleScrollViewListener scrollViewListener = new FriendCircleScrollViewListener();
         scrollViewListener.setScrollYListener((scrollY, down) -> {
@@ -126,6 +132,30 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
         binding.friendCircleScrollView.setOnScrollChangeListener(scrollViewListener);
         //设置scrollView手势监听
         binding.friendCircleScrollView.setOnTouchListener(this);
+        binding.friendCircleUserHead.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        downOnuUserHead = true;
+                        Log.d(TAG, "onTouch:ACTION_DOWN " + downOnuUserHead);
+
+                    }
+                    break;
+                    case MotionEvent.ACTION_UP: {
+                        downOnuUserHead = false;
+                        Log.d(TAG, "onTouch:ACTION_UP " + downOnuUserHead);
+                    }
+                    break;
+                    case MotionEvent.ACTION_CANCEL: {
+                        downOnuUserHead = false;
+                        touchY = event.getRawY();
+                        Log.d(TAG, "onTouch:ACTION_CANCEL " + downOnuUserHead);
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     private void handleScrollDown(int scrollY) {
@@ -233,9 +263,10 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
     private void initData() {
         downY = Utils.dpTpPx(180, FriendCircleActivity.this);
         upY = Utils.dpTpPx(230, FriendCircleActivity.this);
+
+
         Glide.with(this)
                 .load("https://img-blog.csdnimg.cn/20190918140145169.png")
-                .centerCrop()
                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(Utils.dpTpPx(6, FriendCircleActivity.this))))//圆角半径
                 .into(binding.friendCircleUserHead);
     }
@@ -246,18 +277,21 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
         decorView.post(new Runnable() {
             @Override
             public void run() {
-                DisplayCutout displayCutout = decorView.getRootWindowInsets().getDisplayCutout();
-                if (displayCutout != null) {
-                    safeTopDistance = displayCutout.getSafeInsetTop();
+                try {
+                    DisplayCutout displayCutout = decorView.getRootWindowInsets().getDisplayCutout();
+                    if (displayCutout != null) {
+                        safeTopDistance = displayCutout.getSafeInsetTop();
+                        if (safeTopDistance == 0) {
+                            safeTopDistance = Utils.getStatusBarHeight(FriendCircleActivity.this);
+                        }
+                    }
+                } catch (NoSuchMethodError error) {
+                    error.printStackTrace();
+                    safeTopDistance = Utils.getStatusBarHeight(FriendCircleActivity.this);
                 }
+
             }
         });
     }
 
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        Log.d(TAG, "onTouchEvent: ");
-        return super.onTouchEvent(event);
-    }
 }

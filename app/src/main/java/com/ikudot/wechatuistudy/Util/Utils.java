@@ -3,6 +3,7 @@ package com.ikudot.wechatuistudy.Util;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.DisplayMetrics;
@@ -59,7 +60,17 @@ public class Utils {
         return (int)((double) TypedValue.applyDimension(1, value, dm) + 0.5D);
     }
 
-
+    /**
+     * 获取状态栏高度
+     * @param context
+     * @return
+     */
+    public static int getStatusBarHeight(Context context) {
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        int height = resources.getDimensionPixelSize(resourceId);
+        return height;
+    }
 }
 
 

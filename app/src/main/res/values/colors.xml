@@ -9,6 +9,6 @@
     <color name="transparent">#00ffffff</color>
     <color name="photo_select_bg_color">#33ffffff</color>
     <color name="photo_light_mode_select_bg_color">#33000000</color>
-    <color name="user_head_select_bg_color">#77000000</color>
+    <color name="user_head_select_bg_color">#44000000</color>
     <color name="friend_circle_root_color">#2c2c2c</color>
 </resources>
