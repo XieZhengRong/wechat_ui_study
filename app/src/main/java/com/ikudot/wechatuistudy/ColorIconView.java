@@ -43,6 +43,7 @@ public class ColorIconView extends View {
      */
     private boolean reverse;
 
+
     public ColorIconView(Context context, AttributeSet attrs) {
         super(context, attrs);
         //获取自定义属性值
@@ -70,6 +71,7 @@ public class ColorIconView extends View {
             canvas.drawBitmap(iconBitmap, null, iconRect, null);
             setupTargetBitmap();
             canvas.drawBitmap(mBitmap, 0, 0, null);
+
         } else {
             canvas.drawBitmap(iconBitmap, null, iconRect, null);
         }

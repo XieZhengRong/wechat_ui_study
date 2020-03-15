@@ -15,7 +15,7 @@ public class FriendCircleScrollViewListener implements NestedScrollView.OnScroll
              * 所以scrollY-oldScrollY>0即正在向下滑，反之向上滑
              * 回调Y轴方向滑动距离ScrollY和当前滑动方向，true为正在向下滑，false为正在向上滑
              */
-            scrollYListener.onScrollY(scrollY,scrollY-oldScrollY>0?true:false);
+            scrollYListener.onScrollY(scrollY,scrollY - oldScrollY > 0);
         }
     }
 
