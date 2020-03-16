@@ -9,6 +9,7 @@ import android.view.DisplayCutout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,9 +61,10 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
         initData();
         initEvents();
     }
-
+    ObjectAnimator refreshAnimator;
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        refreshAnimator = ObjectAnimator.ofFloat(binding.friendCircleRefreshIcon, "translationY", binding.friendCircleRefreshIcon.getTranslationY(), 0);
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN: {
                 //记住第一个点按下时手指Y轴坐标和id
@@ -83,8 +85,17 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
                 //当滑动距离为0.即没有滑动的时候才能向下移动布局
                 if (scrollY <= 0 && !downOnuUserHead) {
                     //为制造阻力效果，所以2/5.实测这时和微信的感觉差不多
-                    float distance = moveY * 2 / 5;
-                    binding.friendCircleMoveLayout.setTranslationY(distance);
+                    binding.friendCircleMoveLayout.setTranslationY(moveY * 2 / 5);
+                    //向下拖动布局同时刷新图标也一并从顶部移出
+//                    Utils.dpTpPx(120 - 45, this) - Utils.getStatusBarHeight(this) + Utils.dpTpPx(45, this) + Utils.getStatusBarHeight(this);
+                    if (moveY < 320&&moveY>0) {
+                        if (refreshAnimator.isRunning()) {
+                            refreshAnimator.cancel();
+                        }
+                        binding.friendCircleRefreshIcon.setTranslationY( moveY);
+                        binding.friendCircleRefreshIcon.setRotation(moveY*5/2);
+                    }
+
                 }
                 if (binding.friendCircleMoveLayout.getTranslationY() > 0) {
                     //如果TranslationY>0,证明此次向下拖动过布局，不是一开始就向下滚动
@@ -110,6 +121,10 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
                 ObjectAnimator animator = ObjectAnimator.ofFloat(binding.friendCircleMoveLayout, "translationY", binding.friendCircleMoveLayout.getTranslationY(), 0);
                 animator.setDuration(200);
                 animator.start();
+                //复位刷新图标
+//                ObjectAnimator refreshAnimator = ObjectAnimator.ofFloat(binding.friendCircleRefreshIcon, "translationY", binding.friendCircleRefreshIcon.getTranslationY(), 0);
+                refreshAnimator.setDuration(700);
+                refreshAnimator.start();
                 //最后一个点抬起，清空所有手指位置信息
                 touchYMap.clear();
             }
