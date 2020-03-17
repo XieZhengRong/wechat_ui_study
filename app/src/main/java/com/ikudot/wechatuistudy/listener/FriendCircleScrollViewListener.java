@@ -19,6 +19,8 @@ public class FriendCircleScrollViewListener implements NestedScrollView.OnScroll
         }
     }
 
+
+
     /**
      * 自定义Y轴偏移量和滑动方向监听器
      */

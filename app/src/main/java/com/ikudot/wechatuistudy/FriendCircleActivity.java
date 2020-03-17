@@ -1,6 +1,7 @@
 package com.ikudot.wechatuistudy;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.DisplayCutout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
@@ -16,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.ikudot.wechatuistudy.Util.Utils;
@@ -25,6 +29,8 @@ import com.ikudot.wechatuistudy.listener.FriendCircleScrollViewListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FriendCircleActivity extends AppCompatActivity implements View.OnTouchListener {
     private static final String TAG = "FriendCircleActivity";
@@ -42,6 +48,8 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
     FriendCircleBinding binding;//视图绑定对象
     private boolean downOnuUserHead = false;//用户按下时手指触摸点是否在用户头像上
     Map<Integer, Float> touchYMap = new HashMap<>();//记录所有按下手指的 id（Map的Key）和按下点的Y轴坐标（Map的Value）
+    ObjectAnimator loadingAnimator;
+    private boolean loading = false;//是否正在加载中
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +69,10 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
         initData();
         initEvents();
     }
+
     ObjectAnimator refreshAnimator;
+
+    int maxDistance;
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         refreshAnimator = ObjectAnimator.ofFloat(binding.friendCircleRefreshIcon, "translationY", binding.friendCircleRefreshIcon.getTranslationY(), 0);
@@ -72,9 +83,9 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
             }
             break;
             case MotionEvent.ACTION_MOVE: {
+                float moveY = 0;
                 int pointCount = event.getPointerCount();
                 //布局拖动距离
-                float moveY = 0;
                 //布局拖动距离等于所有手指拖动距离的总和
                 for (int i = 0; i < pointCount; i++) {
                     //遍历所有手指的按下Y轴坐标，和当前拖动时的Y轴坐标相减，即是此手指的移动距离
@@ -86,16 +97,17 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
                 if (scrollY <= 0 && !downOnuUserHead) {
                     //为制造阻力效果，所以2/5.实测这时和微信的感觉差不多
                     binding.friendCircleMoveLayout.setTranslationY(moveY * 2 / 5);
-                    //向下拖动布局同时刷新图标也一并从顶部移出
-//                    Utils.dpTpPx(120 - 45, this) - Utils.getStatusBarHeight(this) + Utils.dpTpPx(45, this) + Utils.getStatusBarHeight(this);
-                    if (moveY < 320&&moveY>0) {
-                        if (refreshAnimator.isRunning()) {
-                            refreshAnimator.cancel();
-                        }
-                        binding.friendCircleRefreshIcon.setTranslationY( moveY);
-                        binding.friendCircleRefreshIcon.setRotation(moveY*5/2);
-                    }
 
+                    //向下拖动布局同时刷新图标也一并从顶部移出
+                     maxDistance = Utils.dpTpPx(108, this);
+//                    Utils.dpTpPx(120 - 45, this) - Utils.getStatusBarHeight(this) + Utils.dpTpPx(45, this) + Utils.getStatusBarHeight(this);
+                    binding.friendCircleRefreshIcon.setRotation(-moveY * 7 / 2);
+                    if (moveY > maxDistance) {
+                        moveY = maxDistance;
+                    }
+                    if (!loading) {
+                        binding.friendCircleRefreshIcon.setTranslationY(moveY);
+                    }
                 }
                 if (binding.friendCircleMoveLayout.getTranslationY() > 0) {
                     //如果TranslationY>0,证明此次向下拖动过布局，不是一开始就向下滚动
@@ -121,12 +133,45 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
                 ObjectAnimator animator = ObjectAnimator.ofFloat(binding.friendCircleMoveLayout, "translationY", binding.friendCircleMoveLayout.getTranslationY(), 0);
                 animator.setDuration(200);
                 animator.start();
-                //复位刷新图标
-//                ObjectAnimator refreshAnimator = ObjectAnimator.ofFloat(binding.friendCircleRefreshIcon, "translationY", binding.friendCircleRefreshIcon.getTranslationY(), 0);
-                refreshAnimator.setDuration(700);
-                refreshAnimator.start();
+
                 //最后一个点抬起，清空所有手指位置信息
                 touchYMap.clear();
+
+                if (binding.friendCircleRefreshIcon.getTranslationY() >= maxDistance) {
+                    loading = true;
+                    if (loadingAnimator == null) {
+                        loadingAnimator = ObjectAnimator.ofFloat(binding.friendCircleRefreshIcon, "rotation", 0f, 360f);
+                        loadingAnimator.setDuration(700);
+                        loadingAnimator.setRepeatCount(ObjectAnimator.INFINITE);
+                        loadingAnimator.setRepeatMode(ObjectAnimator.RESTART);
+                        loadingAnimator.setInterpolator(new LinearInterpolator());
+                        loadingAnimator.start();
+                    } else {
+                        loadingAnimator.start();
+                    }
+
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    loadingAnimator.cancel();
+                                    //复位刷新图标
+                                    ObjectAnimator refreshAnimator = ObjectAnimator.ofFloat(binding.friendCircleRefreshIcon, "translationY", binding.friendCircleRefreshIcon.getTranslationY(), 0);
+                                    refreshAnimator.setDuration(700);
+                                    refreshAnimator.start();
+                                    loading = false;
+                                }
+                            });
+                        }
+                    }, 2000);
+                } else {
+                    ObjectAnimator refreshAnimator = ObjectAnimator.ofFloat(binding.friendCircleRefreshIcon, "translationY", binding.friendCircleRefreshIcon.getTranslationY(), 0);
+                    refreshAnimator.setDuration(700);
+                    refreshAnimator.start();
+                }
+
             }
             break;
             case MotionEvent.ACTION_POINTER_DOWN: {
@@ -186,25 +231,14 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
         binding.friendCircleUserHead.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        downOnuUserHead = true;
-
-                        Log.d(TAG, "onTouch:ACTION_DOWN " + downOnuUserHead);
-
-                    }
-                    break;
-                    case MotionEvent.ACTION_UP: {
-                        downOnuUserHead = false;
-                        Log.d(TAG, "onTouch:ACTION_UP " + downOnuUserHead);
-                    }
-                    break;
-                    case MotionEvent.ACTION_CANCEL: {
-                        downOnuUserHead = false;
-                        touchYMap.put(event.getPointerId(event.getActionIndex()), event.getY());
-                        Log.d(TAG, "onTouch:ACTION_CANCEL " + downOnuUserHead);
-                    }
-                }
+                handleCancelEvent(event);
+                return false;
+            }
+        });
+        binding.friendNews.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                handleCancelEvent(event);
                 return false;
             }
         });
@@ -216,8 +250,32 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
             }
         });
     }
+
+    private void handleCancelEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
+                downOnuUserHead = true;
+
+                Log.d(TAG, "onTouch:ACTION_DOWN " + downOnuUserHead);
+
+            }
+            break;
+            case MotionEvent.ACTION_UP: {
+                downOnuUserHead = false;
+                Log.d(TAG, "onTouch:ACTION_UP " + downOnuUserHead);
+            }
+            break;
+            case MotionEvent.ACTION_CANCEL: {
+                downOnuUserHead = false;
+                touchYMap.put(event.getPointerId(event.getActionIndex()), event.getY());
+                Log.d(TAG, "onTouch:ACTION_CANCEL " + downOnuUserHead);
+            }
+        }
+    }
+
     /**
      * 处理下滑悬浮标题栏渐变效果
+     *
      * @param scrollY
      */
     private void handleScrollDown(int scrollY) {
@@ -253,6 +311,7 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
 
     /**
      * 处理上滑悬浮标题栏渐变效果
+     *
      * @param scrollY
      */
     private void handleScrollUp(int scrollY) {
@@ -305,6 +364,7 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
         binding.friendCircleTopBar.setBackgroundColor(getResources().getColor(R.color.transparent));
         Utils.transparencyBar(FriendCircleActivity.this);
     }
+
     /**
      * 设置标题栏为背景明亮模式
      */
@@ -329,13 +389,17 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
                 binding.friendCircleTopBar.setPadding(0, safeTopDistance, 0, 0);
             }
         });
+
+
     }
 
     private void initData() {
         downY = Utils.dpTpPx(180, FriendCircleActivity.this);
         upY = Utils.dpTpPx(230, FriendCircleActivity.this);
         Glide.with(this)
-                .load("https://img-blog.csdnimg.cn/20190918140145169.png")
+//                .load("https://img-blog.csdnimg.cn/20190918140145169.png")
+                .load(R.drawable.head)
+                .centerCrop()
                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(Utils.dpTpPx(6, FriendCircleActivity.this))))//圆角半径
                 .into(binding.friendCircleUserHead);
     }
