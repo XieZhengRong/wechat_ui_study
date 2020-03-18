@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/friend_circle_root_color"
@@ -98,21 +99,21 @@
                         android:background="@android:color/white"
                         android:orientation="vertical">
 
-                        <View
+                        <include layout="@layout/middle_gray_line"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
                             android:layout_marginTop="45dp"
                             android:layout_marginStart="12dp"
                             android:layout_marginEnd="12dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:background="#eeeeee"
-                            />
+                            tools:ignore="Suspicious0dp" />
+
 
                         <RelativeLayout
                             android:id="@+id/friend_news"
                             android:clickable="true"
                             android:background="@drawable/friend_news_selector"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
+                            android:layout_height="55dp"
                             android:focusable="true"
                             >
 
@@ -134,13 +135,12 @@
                                 android:layout_height="wrap_content" />
                         </RelativeLayout>
 
-                        <View
-                            android:layout_marginStart="12dp"
-                            android:layout_marginEnd="12dp"
+                        <include layout="@layout/middle_gray_line"
                             android:layout_width="match_parent"
                             android:layout_height="0.5dp"
-                            android:background="#eeeeee"
-                            />
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
+                            tools:ignore="Suspicious0dp" />
 
                     </LinearLayout>
 
@@ -158,7 +158,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
                             android:layout_marginBottom="5dp"
-                            android:text="谢峥嵘"
+                            android:text="@string/user_name"
                             android:textColor="@android:color/white"
                             android:textStyle="bold" />
 
@@ -170,13 +170,10 @@
                             android:foreground="@drawable/user_head_selector"
                             android:src="@mipmap/ic_launcher_round" />
                     </LinearLayout>
-
                 </FrameLayout>
-
 
         </FrameLayout>
     </androidx.core.widget.NestedScrollView>
-
 
 </LinearLayout>
 

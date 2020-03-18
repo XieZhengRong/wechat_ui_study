@@ -3,4 +3,9 @@
     <string name="friend_circle">朋友圈</string>
     <string name="refresh_icon">刷新图标</string>
     <string name="friend_news">朋友的新动态</string>
+    <string name="tack_photo">拍照</string>
+    <string name="tack_photo_video">拍照或视频</string>
+    <string name="pick_from_gallery">从相册选择</string>
+    <string name="cancel">取消</string>
+    <string name="user_name">谢峥嵘</string>
 </resources>

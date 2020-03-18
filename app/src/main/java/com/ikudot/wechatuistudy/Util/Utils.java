@@ -5,9 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -71,6 +73,33 @@ public class Utils {
         int height = resources.getDimensionPixelSize(resourceId);
         return height;
     }
+
+
+    /**
+     * 获取设备屏幕尺寸信息
+     *
+     * @return Display
+     */
+    public static Display getDisplay(Context context) {
+        WindowManager wm;
+        if (context instanceof Activity) {
+            Activity activity = (Activity) context;
+            wm = activity.getWindowManager();
+        } else {
+            wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        }
+        if (wm != null) {
+            return wm.getDefaultDisplay();
+        }
+        return null;
+    }
+    public static Point getScreenSize(Context context) {
+        Display display = Utils.getDisplay(context);
+        Point point = new Point();
+        display.getSize(point);
+        return point;
+    }
+
 }
 
 

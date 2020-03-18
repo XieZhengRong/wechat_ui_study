@@ -4,6 +4,10 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="black">#ff000000</color>
+    <color name="ripple_color">#ffcccccc</color>
+    <color name="middle_gray">#bbcccccc</color>
+    <color name="black_alpha_low">#77000000</color>
+    <color name="low_gray">#fff6f6f6</color>
     <color name="statusBarColors">#ffebebeb</color>
     <color name="white">#ffffffff</color>
     <color name="transparent">#00ffffff</color>

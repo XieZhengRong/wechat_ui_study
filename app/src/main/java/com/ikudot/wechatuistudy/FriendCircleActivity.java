@@ -24,6 +24,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.ikudot.wechatuistudy.Util.Utils;
 import com.ikudot.wechatuistudy.databinding.FriendCircleBinding;
+import com.ikudot.wechatuistudy.dialog.PublicPhotoDialogFragment;
 import com.ikudot.wechatuistudy.listener.FriendCircleScrollViewListener;
 
 import java.util.HashMap;
@@ -210,7 +211,6 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
         return false;
     }
 
-
     @SuppressLint("ClickableViewAccessibility")
     private void initEvents() {
         FriendCircleScrollViewListener scrollViewListener = new FriendCircleScrollViewListener();
@@ -228,19 +228,16 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
         binding.friendCircleScrollView.setOnScrollChangeListener(scrollViewListener);
         //设置scrollView手势监听
         binding.friendCircleScrollView.setOnTouchListener(this);
-        binding.friendCircleUserHead.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                handleCancelEvent(event);
-                return false;
-            }
+        binding.friendCircleUserHead.setOnTouchListener((v, event) -> {
+            handleCancelEvent(event);
+            return false;
         });
-        binding.friendNews.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                handleCancelEvent(event);
-                return false;
-            }
+        binding.friendNews.setOnTouchListener((v, event) -> {
+            handleCancelEvent(event);
+            return false;
+        });
+        binding.friendCirclePhotoLayout.setOnClickListener(v -> {
+            new PublicPhotoDialogFragment().show(getSupportFragmentManager(),"publicPhotoDialogFragment");
         });
         //双击标题栏滚动到最顶部
         binding.friendCircleTopBar.setOnClickListener(new DoubleClickListener() {
@@ -255,9 +252,7 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
                 downOnuUserHead = true;
-
                 Log.d(TAG, "onTouch:ACTION_DOWN " + downOnuUserHead);
-
             }
             break;
             case MotionEvent.ACTION_UP: {

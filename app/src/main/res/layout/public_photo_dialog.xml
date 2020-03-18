@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/public_photo_dialog_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:background="@drawable/common_radius_ripple"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/public_photo_dialog_top_item"
+        android:gravity="center"
+
+        android:orientation="vertical"
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:text="@string/tack_photo"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/tack_photo_video"
+
+                android:textColor="@color/black_alpha_low"
+                android:textSize="11sp"
+                tools:ignore="SmallSp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <include layout="@layout/middle_gray_line" />
+
+    <LinearLayout
+        android:background="@drawable/common_ripple"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/public_photo_item_height"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:textSize="15sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/pick_from_gallery"
+            android:textColor="@color/black" />
+    </LinearLayout>
+    <include layout="@layout/middle_gray_line" />
+
+    <View
+        android:background="@color/low_gray"
+        android:layout_width="match_parent"
+        android:layout_height="8dp" />
+    <include layout="@layout/middle_gray_line" />
+    <LinearLayout
+        android:background="@drawable/middle_gray_selector"
+        android:focusable="true"
+        android:clickable="true"
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/public_photo_item_height"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/black" />
+    </LinearLayout>
+</LinearLayout>
