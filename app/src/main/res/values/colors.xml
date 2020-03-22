@@ -16,4 +16,9 @@
     <color name="user_head_select_bg_color">#44000000</color>
     <color name="friend_news_select_bg_color">#22000000</color>
     <color name="friend_circle_root_color">#2c2c2c</color>
+    <color name="user_name_color">#576a98</color>
+    <color name="item_time_color">#909090</color>
+    <color name="circle_color">#597092</color>
+    <color name="radius_low_gray_color">#f8f8f8</color>
+    <color name="radius_middle_gray_color">#e8e8e8</color>
 </resources>

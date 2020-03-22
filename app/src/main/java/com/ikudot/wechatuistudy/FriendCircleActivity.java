@@ -202,8 +202,6 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
                     //平分抬起点拖动距离，等价于将所有点按下位置加上平分的距离，因为moveY是所有点移动时Y轴坐标减去相应点按下时的Y轴坐标
                     touchYMap.put(positionId, touchYMap.get(positionId) - perPointerDistributeDistance);
                 }
-//                Log.d(TAG, "ACTION_POINTER_UP:upPointerMoveDistance= " + upPointerMoveDistance);
-//                Log.d(TAG, "ACTION_POINTER_UP:touchMap= " + touchYMap);
             }
             break;
 
