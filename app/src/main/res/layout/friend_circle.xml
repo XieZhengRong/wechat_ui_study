@@ -78,99 +78,108 @@
                 android:layout_width="27dp"
                 android:layout_height="27dp"
                 android:layout_marginStart="35dp"
+                android:contentDescription="@string/refresh_icon"
                 android:src="@drawable/aym"
-                android:translationZ="10dp"
-                android:contentDescription="@string/refresh_icon" />
-                <FrameLayout
-                    android:id="@+id/friend_circle_move_layout"
+                android:translationZ="10dp" />
+
+            <FrameLayout
+                android:id="@+id/friend_circle_move_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="340dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/default_bg" />
 
-                    <ImageView
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="325dp"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
+
+                    <include
+                        layout="@layout/middle_gray_line"
                         android:layout_width="match_parent"
-                        android:layout_height="340dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/default_bg" />
+                        android:layout_height="0.5dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="45dp"
+                        android:layout_marginEnd="12dp"
+                        tools:ignore="Suspicious0dp" />
 
-                    <LinearLayout
+
+                    <RelativeLayout
+                        android:id="@+id/friend_news"
                         android:layout_width="match_parent"
-                        android:layout_height="1500dp"
-                        android:layout_marginTop="325dp"
-                        android:background="@android:color/white"
-                        android:orientation="vertical">
-
-                        <include layout="@layout/middle_gray_line"
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:layout_marginTop="45dp"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginEnd="12dp"
-                            tools:ignore="Suspicious0dp" />
-
-
-                        <RelativeLayout
-                            android:id="@+id/friend_news"
-                            android:clickable="true"
-                            android:background="@drawable/friend_news_selector"
-                            android:layout_width="match_parent"
-                            android:layout_height="55dp"
-                            android:focusable="true"
-                            >
-
-                            <TextView
-                                android:layout_centerVertical="true"
-                                android:text="@string/friend_news"
-                                android:layout_marginStart="27dp"
-                                android:textColor="@color/black"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <ImageView
-
-                                android:layout_marginEnd="27dp"
-                                android:layout_centerVertical="true"
-                                android:layout_alignParentEnd="true"
-                                android:src="@drawable/ic_right_navigation"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-                        </RelativeLayout>
-
-                        <include layout="@layout/middle_gray_line"
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginEnd="12dp"
-                            tools:ignore="Suspicious0dp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/user_head_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="286dp"
-                        android:layout_marginEnd="13dp"
-                        android:gravity="center">
+                        android:layout_height="55dp"
+                        android:background="@drawable/friend_news_selector"
+                        android:clickable="true"
+                        android:focusable="true">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="5dp"
-                            android:text="@string/user_name"
-                            android:textColor="@android:color/white"
-                            android:textStyle="bold" />
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="27dp"
+                            android:text="@string/friend_news"
+                            android:textColor="@color/black" />
 
                         <ImageView
-                            android:id="@+id/friend_circle_user_head"
-                            android:layout_width="54dp"
-                            android:layout_height="54dp"
-                            android:clickable="true"
-                            android:foreground="@drawable/user_head_selector"
-                            android:src="@mipmap/ic_launcher_round" />
-                    </LinearLayout>
-                </FrameLayout>
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="27dp"
+                            android:src="@drawable/ic_right_navigation" />
+                    </RelativeLayout>
+
+                    <include
+                        layout="@layout/middle_gray_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        tools:ignore="Suspicious0dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/friend_circle_recycler_view"
+                        android:layout_marginTop="38dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:nestedScrollingEnabled="false"
+                        tools:itemCount="100" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/user_head_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="286dp"
+                    android:layout_marginEnd="13dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/user_name"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/friend_circle_user_head"
+                        android:layout_width="54dp"
+                        android:layout_height="54dp"
+                        android:clickable="true"
+                        android:foreground="@drawable/user_head_selector"
+                        android:src="@mipmap/ic_launcher_round" />
+                </LinearLayout>
+            </FrameLayout>
 
         </FrameLayout>
     </androidx.core.widget.NestedScrollView>
