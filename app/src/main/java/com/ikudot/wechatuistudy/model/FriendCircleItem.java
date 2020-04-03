@@ -5,13 +5,34 @@ import java.util.List;
 import java.util.Objects;
 
 public class FriendCircleItem {
-    public FriendCircleItem(){}
+    public FriendCircleItem() {
+    }
+
     public FriendCircleItem(String userName, String content, String headUrl, int type, String singlePhotoUrl, String publicTime, String sharePlatform) {
         this.userName = userName;
         this.content = content;
         this.headUrl = headUrl;
         this.type = type;
         this.singlePhotoUrl = singlePhotoUrl;
+        this.publicTime = publicTime;
+        this.sharePlatform = sharePlatform;
+    }
+
+    public FriendCircleItem(String userName, String content, String headUrl, int type, String[] fourPhotoUrls, String publicTime, String sharePlatform) {
+        this.userName = userName;
+        this.content = content;
+        this.headUrl = headUrl;
+        this.type = type;
+        this.multiplePhotoUrls = fourPhotoUrls;
+        this.publicTime = publicTime;
+        this.sharePlatform = sharePlatform;
+    }
+    public FriendCircleItem(String userName, String content, String headUrl, int type, Music music, String publicTime, String sharePlatform) {
+        this.userName = userName;
+        this.content = content;
+        this.headUrl = headUrl;
+        this.type = type;
+        this.music = music;
         this.publicTime = publicTime;
         this.sharePlatform = sharePlatform;
     }
@@ -32,13 +53,23 @@ public class FriendCircleItem {
     private String singlePhotoUrl;//单图url
     private String publicTime;//发布时间
     private String sharePlatform;//分享平台
+    private String[] multiplePhotoUrls;
+    private Music music;
 
-    public static List<FriendCircleItem> generateItemList(){
+    public static List<FriendCircleItem> generateItemList() {
         List<FriendCircleItem> list = new ArrayList<>();
-        while (list.size() < 20) {
-            int size = list.size();
-            list.add(new FriendCircleItem("用户"+size,"今天天气很好"+size,"https://img-blog.csdnimg.cn/20190918140145169.png",2,"https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg","一小时前","网易云音乐"));
-        }
+        list.add(new FriendCircleItem("李白（国服）", "今天不小心喝醉了，大招没有摁出来。", "https://img-blog.csdnimg.cn/20190918140145169.png", 2, "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "两分钟前", "王者荣耀"));
+        list.add(new FriendCircleItem("鲁班（村服）", "刚刚对面兰陵王太过分了气得我直接举报", "https://img-blog.csdnimg.cn/20190918140145169.png", 1, "", "四分钟前", "王者荣耀"));
+        String[] multiplePhotoUrls = new String[]{"https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg"};
+        list.add(new FriendCircleItem("扁鹊（最菜）", "刚刚拖住对面的最终偷塔成功哈哈哈", "https://img-blog.csdnimg.cn/20190918140145169.png", 3, multiplePhotoUrls, "五分钟前", "王者荣耀"));
+        multiplePhotoUrls = new String[]{"https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg",};
+        list.add(new FriendCircleItem("橘右京", "被李信追得我_(:з」∠)_刀都不见了", "https://img-blog.csdnimg.cn/20190918140145169.png", 4, multiplePhotoUrls, "八分钟前", "王者荣耀"));
+        multiplePhotoUrls = new String[]{"https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg",  "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg"};
+        list.add(new FriendCircleItem("东方·耀", "我能把李白和韩信按在地上摩擦。", "https://img-blog.csdnimg.cn/20190918140145169.png", 4, multiplePhotoUrls, "九分钟前", "王者荣耀"));
+        Music music = new Music("甜甜份","","汪苏泷、BY2");
+        FriendCircleItem musicItem = new FriendCircleItem("老夫子", "今天钓到条大鱼，听首歌庆祝一下哈哈哈。", "https://img-blog.csdnimg.cn/20190918140145169.png", 5, music, "两小时前", "王者荣耀");
+        list.add(musicItem);
+
         return list;
     }
 
@@ -128,5 +159,23 @@ public class FriendCircleItem {
     @Override
     public int hashCode() {
         return Objects.hash(userName, content, headUrl, type, singlePhotoUrl, publicTime, sharePlatform);
+    }
+
+
+    public String[] getMultiplePhotoUrls() {
+        return multiplePhotoUrls;
+    }
+
+    public void setMultiplePhotoUrls(String[] multiplePhotoUrls) {
+        this.multiplePhotoUrls = multiplePhotoUrls;
+    }
+
+
+    public Music getMusic() {
+        return music;
+    }
+
+    public void setMusic(Music music) {
+        this.music = music;
     }
 }

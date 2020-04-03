@@ -10,9 +10,16 @@
 
     <style name="CommonDialogStyle" parent="android:Animation">
         <!--//进入时的动画-->
-        <item name="android:windowEnterAnimation">@anim/coupon_dialog_enter</item>
+        <item name="android:windowEnterAnimation">@anim/common_dialog_enter</item>
         <!--//退出时的动画-->
-        <item name="android:windowExitAnimation">@anim/coupon_dialog_exit</item>
+        <item name="android:windowExitAnimation">@anim/common_dialog_exit</item>
+    </style>
+
+    <style name="FriendCirclePopUpWindow" parent="android:Animation">
+        <!--//进入时的动画-->
+        <item name="android:windowEnterAnimation">@anim/popup_window_enter</item>
+        <!--//退出时的动画-->
+        <item name="android:windowExitAnimation">@anim/popup_window_exit</item>
     </style>
 
     <style name="Dialog" parent="android:style/Theme.Dialog">
@@ -21,4 +28,5 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
     </style>
+
 </resources>

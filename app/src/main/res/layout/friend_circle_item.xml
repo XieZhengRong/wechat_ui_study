@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -10,15 +11,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        >
-
+        android:paddingEnd="10dp">
         <ImageView
             android:id="@+id/friend_item_user_head"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@mipmap/ic_launcher" />
-
+            android:foreground="@drawable/user_head_selector"
+            android:clickable="true"
+            android:src="@mipmap/ic_launcher"
+            android:focusable="true"
+            android:contentDescription="@string/friend_circle_item_user_head" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,27 +51,148 @@
 
     </LinearLayout>
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_marginTop="7dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginBottom="15dp"
-        android:paddingStart="54dp">
+        android:paddingStart="54dp"
+        tools:ignore="RtlSymmetry">
 
         <ImageView
             android:id="@+id/friend_item_single_photo"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:adjustViewBounds="true"
             android:maxWidth="275dp"
             android:maxHeight="275dp"
-            android:src="@drawable/demo_photo" />
+            android:src="@drawable/demo_photo"
+            android:contentDescription="@string/single_friend_circle_photo" />
+
+        <LinearLayout
+            android:id="@+id/four_photo_layout"
+            android:layout_marginTop="7dp"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/first_photo"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_bg"
+                    android:layout_width="91.25dp"
+                    android:layout_height="91.25dp" />
+                <ImageView
+                    android:id="@+id/second_photo"
+                    android:layout_marginStart="3dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_bg"
+                    android:layout_width="91.25dp"
+                    android:layout_height="91.25dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="3dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/third_photo"
+
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_bg"
+                    android:layout_width="91.25dp"
+                    android:layout_height="91.25dp" />
+                <ImageView
+                    android:id="@+id/fourth_photo"
+                    android:layout_marginStart="3dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_bg"
+                    android:layout_width="91.25dp"
+                    android:layout_height="91.25dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/music_layout"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginEnd="10dp"
+            android:clickable="true"
+
+            android:background="@drawable/music_item_selector"
+            android:layout_height="50dp"
+            android:focusable="true">
+
+            <FrameLayout
+                android:paddingTop="5dp"
+                android:paddingStart="5dp"
+                android:paddingBottom="5dp"
+                android:layout_width="50dp"
+                android:layout_height="match_parent" >
+
+                <ImageView
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <ImageView
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/b0w"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:textColor="#707790"
+                    android:text="有你的快乐"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="8dp"
+                    android:textSize="13sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="王若玲"
+                    android:textSize="11sp"
+                    android:layout_marginStart="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
+            android:id="@+id/multiple_photo_recycler_view"
+            android:layout_marginTop="7dp"
+            android:layout_width="281dp"
+            android:nestedScrollingEnabled="false"
+            android:scrollbars="none"
+            android:overScrollMode="never"
+            android:layout_height="wrap_content" />
 
         <RelativeLayout
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="18dp">
 
             <TextView
                 android:id="@+id/friend_item_public_time"
@@ -78,29 +201,32 @@
                 android:layout_height="wrap_content"
                 android:text="一小时前"
                 android:textColor="@color/item_time_color"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
             <TextView
                 android:id="@+id/friend_item_share_platform"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_centerVertical="true"
 
-                android:layout_toRightOf="@id/friend_item_public_time"
+                android:layout_toEndOf="@id/friend_item_public_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="酷狗音乐"
                 android:textColor="@color/item_time_color"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
 
             <LinearLayout
                 android:id="@+id/friend_item_more_button"
                 android:background="@drawable/friend_item_more_button_selector"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:gravity="center"
                 android:clickable="true"
                 android:layout_width="30dp"
                 android:layout_alignParentEnd="true"
                 android:orientation="horizontal"
-                android:layout_height="18dp" >
+                android:layout_height="18dp"
+                android:focusable="true">
 
                 <ImageView
                     android:src="@drawable/circle"
@@ -108,7 +234,7 @@
                     android:layout_height="wrap_content" />
 
                 <ImageView
-                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
                     android:src="@drawable/circle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

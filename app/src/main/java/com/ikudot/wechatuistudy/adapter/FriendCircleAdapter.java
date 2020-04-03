@@ -1,7 +1,6 @@
 package com.ikudot.wechatuistudy.adapter;
 
-import android.content.Context;
-import android.view.Gravity;
+import android.graphics.Point;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,15 +20,19 @@ import com.ikudot.wechatuistudy.FriendCircleActivity;
 import com.ikudot.wechatuistudy.R;
 import com.ikudot.wechatuistudy.Util.Utils;
 import com.ikudot.wechatuistudy.model.FriendCircleItem;
+
+import java.util.Arrays;
 import java.util.List;
 
 public class FriendCircleAdapter extends RecyclerView.Adapter<FriendCircleAdapter.FriendCircleItemHolder> {
     private FriendCircleActivity activity;
     private List<FriendCircleItem> friendCircleItems;
-    public FriendCircleAdapter(FriendCircleActivity activity,List<FriendCircleItem> friendCircleItems){
+
+    public FriendCircleAdapter(FriendCircleActivity activity, List<FriendCircleItem> friendCircleItems) {
         this.activity = activity;
         this.friendCircleItems = friendCircleItems;
     }
+
     @NonNull
     @Override
     public FriendCircleItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,25 +47,71 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<FriendCircleAdapte
 
     @Override
     public void onBindViewHolder(@NonNull FriendCircleItemHolder holder, int position) {
-        Glide.with(activity).load(friendCircleItems.get(position).getHeadUrl())  .centerCrop()
-                .apply(RequestOptions.bitmapTransform(new RoundedCorners(Utils.dpTpPx(4,activity))))//圆角半径
+        FriendCircleItem friendCircleItem = friendCircleItems.get(position);
+        Glide.with(activity).load(friendCircleItems.get(position).getHeadUrl()).centerCrop()
+                .apply(RequestOptions.bitmapTransform(new RoundedCorners(Utils.dpTpPx(6, activity))))//圆角半径
                 .into(holder.userHead);
-        Glide.with(activity).load(friendCircleItems.get(position).getSinglePhotoUrl()).into(holder.singlePhoto);
-        holder.userName.setText(friendCircleItems.get(position).getUserName());
-        holder.content.setText(friendCircleItems.get(position).getContent());
-        holder.publicTime.setText(friendCircleItems.get(position).getPublicTime());
-        holder.sharePlatform.setText(friendCircleItems.get(position).getSharePlatform());
+
+        holder.userName.setText(friendCircleItem.getUserName());
+        holder.content.setText(friendCircleItem.getContent());
+        holder.publicTime.setText(friendCircleItem.getPublicTime());
+        holder.sharePlatform.setText(friendCircleItem.getSharePlatform());
+        switch (friendCircleItem.getType()) {
+            case 1: {
+                //纯文字朋友圈
+                holder.singlePhoto.setVisibility(View.GONE);
+                holder.fourPhotoLayout.setVisibility(View.GONE);
+                holder.multipleRecyclerView.setVisibility(View.GONE);
+            }
+            break;
+            case 2: {
+                //单图朋友圈
+                Glide.with(activity).load(friendCircleItem.getSinglePhotoUrl()).into(holder.singlePhoto);
+                holder.singlePhoto.setVisibility(View.VISIBLE);
+                holder.fourPhotoLayout.setVisibility(View.GONE);
+                holder.multipleRecyclerView.setVisibility(View.GONE);
+            }
+            break;
+            case 3: {
+                //四张图朋友圈
+                String[] multiplePhotoUrls = friendCircleItem.getMultiplePhotoUrls();
+                Glide.with(activity).load(multiplePhotoUrls[0]).into((ImageView) holder.fourPhotoLayout.findViewById(R.id.first_photo));
+                Glide.with(activity).load(multiplePhotoUrls[2]).into((ImageView) holder.fourPhotoLayout.findViewById(R.id.second_photo));
+                Glide.with(activity).load(multiplePhotoUrls[1]).into((ImageView) holder.fourPhotoLayout.findViewById(R.id.third_photo));
+                Glide.with(activity).load(multiplePhotoUrls[3]).into((ImageView) holder.fourPhotoLayout.findViewById(R.id.fourth_photo));
+                holder.singlePhoto.setVisibility(View.GONE);
+                holder.fourPhotoLayout.setVisibility(View.VISIBLE);
+                holder.multipleRecyclerView.setVisibility(View.GONE);
+            }
+            break;
+            case 4: {
+                //多图图朋友圈（2~9张除4张外）
+                String[] multiplePhotoUrls = friendCircleItem.getMultiplePhotoUrls();
+                List<String> list = Arrays.asList(multiplePhotoUrls);
+                GridLayoutManager layoutManager = new GridLayoutManager(activity, 3);
+                MultiplePhotoAdapter adapter = new MultiplePhotoAdapter(activity, list);
+                holder.multipleRecyclerView.setLayoutManager(layoutManager);
+                holder.multipleRecyclerView.setAdapter(adapter);
+                holder.multipleRecyclerView.setOnTouchListener(activity);
+                holder.singlePhoto.setVisibility(View.GONE);
+                holder.fourPhotoLayout.setVisibility(View.GONE);
+                holder.multipleRecyclerView.setVisibility(View.VISIBLE);
+            }
+            break;
+
+        }
 
         holder.more.setOnTouchListener(activity);
+        holder.userHead.setOnTouchListener(activity);
         View view = LayoutInflater.from(activity).inflate(R.layout.more_popup_window, null, false);
-        PopupWindow popupWindow = new PopupWindow(view, Utils.dpTpPx(170,activity), Utils.dpTpPx(50,activity));
+        PopupWindow popupWindow = new PopupWindow(view, Utils.dpTpPx(170, activity), Utils.dpTpPx(43, activity));
         popupWindow.setOutsideTouchable(true);
-        int[] location = new int[2];
-        holder.more.getLocationInWindow(location);
-        holder.more.setOnClickListener(v-> popupWindow.showAsDropDown(v,Gravity.NO_GRAVITY,location[0], location[1  ]));
+        popupWindow.setAnimationStyle(R.style.FriendCirclePopUpWindow);
+        Point point = Utils.getScreenSize(holder.itemView.getContext());
+        holder.more.setOnClickListener(v -> popupWindow.showAsDropDown(holder.itemView, point.x - Utils.dpTpPx(210 + 8, holder.itemView.getContext()), -Utils.dpTpPx(46f, holder.itemView.getContext())));
     }
 
-    static class FriendCircleItemHolder extends RecyclerView.ViewHolder{
+    static class FriendCircleItemHolder extends RecyclerView.ViewHolder {
         ImageView userHead;
         TextView userName;
         TextView content;
@@ -68,6 +119,9 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<FriendCircleAdapte
         TextView publicTime;
         TextView sharePlatform;
         LinearLayout more;
+        LinearLayout fourPhotoLayout;
+        LinearLayout musicLayout;
+        RecyclerView multipleRecyclerView;
 
         public FriendCircleItemHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,11 +131,14 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<FriendCircleAdapte
             singlePhoto = itemView.findViewById(R.id.friend_item_single_photo);
             publicTime = itemView.findViewById(R.id.friend_item_public_time);
             sharePlatform = itemView.findViewById(R.id.friend_item_share_platform);
+            fourPhotoLayout = itemView.findViewById(R.id.four_photo_layout);
+            multipleRecyclerView = itemView.findViewById(R.id.multiple_photo_recycler_view);
             more = itemView.findViewById(R.id.friend_item_more_button);
+            musicLayout = itemView.findViewById(R.id.music_layout);
         }
     }
 
-    public void updateList(List<FriendCircleItem> friendCircleItems){
+    public void updateList(List<FriendCircleItem> friendCircleItems) {
         this.friendCircleItems = friendCircleItems;
         notifyDataSetChanged();
     }

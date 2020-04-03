@@ -1,5 +1,4 @@
 package com.ikudot.wechatuistudy;
-
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -35,7 +34,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
 public class FriendCircleActivity extends AppCompatActivity implements View.OnTouchListener {
     private static final String TAG = "FriendCircleActivity";
     int safeTopDistance;//距离顶部安全距离(必须是刘海屏才有)
@@ -106,7 +104,7 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
                 //处理下滑悬浮标题效果
                 handleScrollDown(scrollY);
             } else {
-                //处理赏花悬浮标题效果
+                //处理上滑悬浮标题效果
                 handleScrollUp(scrollY);
             }
         });

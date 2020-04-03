@@ -12,4 +12,6 @@
     <string name="dzx">M2,4.27 L19.73,22 L22.27,19.46 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
     <string name="dzy">M2,4.27 L2,4.27 L4.54,1.73 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
     <string name="dzz">M3.27,4.27 L19.74,20.74</string>
+    <string name="single_friend_circle_photo">单张朋友圈图片</string>
+    <string name="friend_circle_item_user_head">朋友圈列表用户头像</string>
 </resources>

@@ -2,7 +2,7 @@ package com.ikudot.wechatuistudy.listener;
 import androidx.core.widget.NestedScrollView;
 
 /**
- * @author XieZhengRong
+ * @author 谢峥嵘
  * @Description 自定义NestedScrollView滑动监听类
  */
 public class FriendCircleScrollViewListener implements NestedScrollView.OnScrollChangeListener {

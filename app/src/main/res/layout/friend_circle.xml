@@ -149,6 +149,8 @@
                         android:layout_marginTop="38dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:overScrollMode="never"
+                        android:scrollbars="none"
                         android:nestedScrollingEnabled="false"
                         tools:itemCount="100" />
                 </LinearLayout>
