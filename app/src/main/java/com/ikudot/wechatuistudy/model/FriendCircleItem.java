@@ -66,8 +66,9 @@ public class FriendCircleItem {
         list.add(new FriendCircleItem("橘右京", "被李信追得我_(:з」∠)_刀都不见了", "https://img-blog.csdnimg.cn/20190918140145169.png", 4, multiplePhotoUrls, "八分钟前", "王者荣耀"));
         multiplePhotoUrls = new String[]{"https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg",  "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg", "https://mtshop1.meitudata.com/5bc9e7f959be891140.jpg"};
         list.add(new FriendCircleItem("东方·耀", "我能把李白和韩信按在地上摩擦。", "https://img-blog.csdnimg.cn/20190918140145169.png", 4, multiplePhotoUrls, "九分钟前", "王者荣耀"));
-        Music music = new Music("甜甜份","","汪苏泷、BY2");
-        FriendCircleItem musicItem = new FriendCircleItem("老夫子", "今天钓到条大鱼，听首歌庆祝一下哈哈哈。", "https://img-blog.csdnimg.cn/20190918140145169.png", 5, music, "两小时前", "王者荣耀");
+        Music music = new Music("甜甜的","汪苏泷、By2","https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1586084379&di=849d0097e022fe031b1f4db5acb9063d&src=http://img.jk51.com/img_jk51/341689302.jpeg","");
+        FriendCircleItem musicItem = new FriendCircleItem("老夫子", "今天钓到条大鱼，听首歌庆祝一下哈哈哈。", "https://img-blog.csdnimg.cn/20190918140145169.png", 5, music, "两小时前", "网易云音乐");
+        musicItem.setMusic(music);
         list.add(musicItem);
 
         return list;

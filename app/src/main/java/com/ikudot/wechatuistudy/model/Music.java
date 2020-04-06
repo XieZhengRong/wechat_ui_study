@@ -3,14 +3,17 @@ package com.ikudot.wechatuistudy.model;
 public class Music {
 
     private String name;
-    private String url;
-    private String description;
+    private String author;
+    private String imageUrl;
+    private String musicUrl;
+    public Music ( String name,String author,String imageUrl,String musicUrl){
 
-    public Music (String name,String url,String description){
         this.name = name;
-        this.url = url;
-        this.description = description;
+        this.author = author;
+        this.imageUrl = imageUrl;
+        this.musicUrl = musicUrl;
     }
+
 
     public String getName() {
         return name;
@@ -20,20 +23,27 @@ public class Music {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public String getDescription() {
-        return description;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
+    public String getMusicUrl() {
+        return musicUrl;
+    }
+
+    public void setMusicUrl(String musicUrl) {
+        this.musicUrl = musicUrl;
+    }
 }

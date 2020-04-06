@@ -10,15 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.ikudot.wechatuistudy.R;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.ImageViewerPopupView;
+import com.lxj.xpopup.interfaces.OnSrcViewUpdateListener;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MultiplePhotoAdapter extends RecyclerView.Adapter<MultiplePhotoAdapter.ViewHolder> {
     private Context context;
-    private List<String> dataList;
+    private List<Object> dataList;
 
-    public MultiplePhotoAdapter(Context context, List<String> dataList) {
+    public MultiplePhotoAdapter(Context context, List<Object> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
@@ -30,8 +36,17 @@ public class MultiplePhotoAdapter extends RecyclerView.Adapter<MultiplePhotoAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Glide.with(context).load(dataList.get(position)).into(holder.imageView);
+        Glide.with(holder.imageView).load(dataList.get(position)).apply(new RequestOptions().placeholder(R.mipmap.ic_launcher_round)
+                .override(Target.SIZE_ORIGINAL))
+                .into(holder.imageView);
 
+        holder.imageView.setOnClickListener(v ->
+                new XPopup.Builder(holder.itemView.getContext()).asImageViewer(holder.imageView, position, dataList, (popupView, position1) -> {
+            RecyclerView rv  = (RecyclerView) holder.itemView.getParent();
+            popupView.updateSrcView(rv.getChildAt(position1).findViewById(R.id.multiple_photo_item));
+
+        }, new FriendCircleAdapter.ImageLoader())
+                .isShowSaveButton(false).show());
     }
 
     @Override
@@ -39,11 +54,11 @@ public class MultiplePhotoAdapter extends RecyclerView.Adapter<MultiplePhotoAdap
         return dataList.size();
     }
 
-    public List<String> getDataList() {
+    public List<Object> getDataList() {
         return dataList;
     }
 
-    public void setDataList(List<String> dataList) {
+    public void setDataList(List<Object> dataList) {
         this.dataList = dataList;
     }
 
@@ -55,7 +70,7 @@ public class MultiplePhotoAdapter extends RecyclerView.Adapter<MultiplePhotoAdap
         }
     }
 
-    public void update(List<String> dataList){
+    public void update(List<Object> dataList){
         this.dataList = dataList;
         notifyDataSetChanged();
     }

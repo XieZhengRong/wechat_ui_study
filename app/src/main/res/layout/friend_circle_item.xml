@@ -74,54 +74,6 @@
             android:src="@drawable/demo_photo"
             android:contentDescription="@string/single_friend_circle_photo" />
 
-        <LinearLayout
-            android:id="@+id/four_photo_layout"
-            android:layout_marginTop="7dp"
-            android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/first_photo"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/default_bg"
-                    android:layout_width="91.25dp"
-                    android:layout_height="91.25dp" />
-                <ImageView
-                    android:id="@+id/second_photo"
-                    android:layout_marginStart="3dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/default_bg"
-                    android:layout_width="91.25dp"
-                    android:layout_height="91.25dp" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginTop="3dp"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/third_photo"
-
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/default_bg"
-                    android:layout_width="91.25dp"
-                    android:layout_height="91.25dp" />
-                <ImageView
-                    android:id="@+id/fourth_photo"
-                    android:layout_marginStart="3dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/default_bg"
-                    android:layout_width="91.25dp"
-                    android:layout_height="91.25dp" />
-            </LinearLayout>
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/music_layout"
@@ -131,27 +83,26 @@
             android:clickable="true"
 
             android:background="@drawable/music_item_selector"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:focusable="true">
 
             <FrameLayout
-                android:paddingTop="5dp"
-                android:paddingStart="5dp"
-                android:paddingBottom="5dp"
-                android:layout_width="50dp"
+                android:layout_width="42dp"
                 android:layout_height="match_parent" >
 
                 <ImageView
+                    android:layout_gravity="center"
+                    android:id="@+id/music_image"
                     android:scaleType="centerCrop"
                     android:src="@drawable/default_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_width="35dp"
+                    android:layout_height="38dp" />
                 <ImageView
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
                     android:src="@drawable/b0w"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:layout_width="25dp"
+                    android:layout_height="25dp" />
 
 
             </FrameLayout>
@@ -162,17 +113,19 @@
                 android:orientation="vertical" >
 
                 <TextView
+                    android:id="@+id/music_name"
                     android:textColor="#707790"
                     android:text="有你的快乐"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginStart="4dp"
                     android:textSize="13sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
+                    android:id="@+id/music_author"
                     android:text="王若玲"
                     android:textSize="11sp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -180,10 +133,9 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:visibility="gone"
             android:id="@+id/multiple_photo_recycler_view"
             android:layout_marginTop="7dp"
-            android:layout_width="281dp"
+            android:layout_width="wrap_content"
             android:nestedScrollingEnabled="false"
             android:scrollbars="none"
             android:overScrollMode="never"

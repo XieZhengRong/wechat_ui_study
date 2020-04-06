@@ -128,7 +128,9 @@ public class FriendCircleActivity extends AppCompatActivity implements View.OnTo
                         //遍历所有手指的按下Y轴坐标，和当前拖动时的Y轴坐标相减，即是此手指的移动距离
                         Float pointTouchY = touchYMap.get(event.getPointerId(i));
                         //累加所有手指的移动距离
-                        moveY += event.getY(i) - pointTouchY;
+                        if (pointTouchY != null) {
+                            moveY += event.getY(i) - pointTouchY;
+                        }
                     }
                     //当滑动距离为0.即没有滑动的时候才能向下移动布局
                     if (scrollY <= 0 && !downOnuUserHead) {
