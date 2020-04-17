@@ -21,6 +21,18 @@
         <!--//退出时的动画-->
         <item name="android:windowExitAnimation">@anim/popup_window_exit</item>
     </style>
+    <style name="LongClickPopUpWindow">
+        <!--//进入时的动画-->
+        <item name="android:windowEnterAnimation">@anim/long_click_popup_window_enter</item>
+        <!--//退出时的动画-->
+        <item name="android:windowExitAnimation">@anim/long_click_popup_window_exit</item>
+    </style>
+    <style name="LongClickLeftPopUpWindow">
+        <!--//进入时的动画-->
+        <item name="android:windowEnterAnimation">@anim/long_click_left_popup_window_enter</item>
+        <!--//退出时的动画-->
+        <item name="android:windowExitAnimation">@anim/long_click_left_popup_window_exit</item>
+    </style>
 
     <style name="Dialog" parent="android:style/Theme.Dialog">
         <item name="android:background">#00000000</item>

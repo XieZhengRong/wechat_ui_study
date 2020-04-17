@@ -25,4 +25,5 @@
     <color name="radius_middle_gray_color">#e8e8e8</color>
     <color name="black_more">#2e2e2e</color>
     <color name="black_height_more">#272727</color>
+    <color name="text_select_background_color">#e5e5e5</color>
 </resources>
